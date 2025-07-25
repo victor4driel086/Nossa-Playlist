@@ -149,10 +149,15 @@
           rel: 0,
         },
         events: {
-          'onReady': function () {
-            playerReady = true;
-          }
-        }
+  'onReady': function () {
+    playerReady = true;
+  },
+  'onStateChange': function (event) {
+    if (event.data === YT.PlayerState.ENDED) {
+      nextSong(); // Toca a próxima automaticamente
+    }
+  }
+}
       });
     }
 
