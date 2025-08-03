@@ -2,91 +2,141 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nossa Playlist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background-color: #121212;
-      color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
     }
 
-    .sidebar {
-      width: 250px;
-      background-color: #1e1e1e;
-      padding: 20px;
-      box-sizing: border-box;
-      border-right: 1px solid #333;
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #2c003e, #4b1034);
+      color: white;
     }
 
     h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
+      font-family: 'Pacifico', cursive;
+      text-align: center;
+      font-size: 2.5em;
+      margin: 20px 0 10px;
+      color: #ffcce6;
     }
 
-    .music-list {
+    .music-container {
+      padding: 10px 20px 240px; /* espaço para o player fixo */
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .music-container ul {
       list-style: none;
       padding: 0;
     }
 
-    .music-list li {
-      padding: 10px;
+    .music-container li {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       cursor: pointer;
-      border-bottom: 1px solid #333;
+      transition: background 0.3s;
     }
 
-    .music-list li:hover {
-      background-color: #333;
+    .music-container li:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .player {
-      flex: 1;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 220px;
+      padding: 20px 20px 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background-color: #121212;
-      position: relative;
+      justify-content: flex-end;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(5px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+      text-align: center;
     }
 
     #musicTitle {
-      margin-bottom: 20px;
-      font-size: 20px;
+      font-weight: bold;
+      font-size: 1.3em;
+      margin-bottom: 15px;
+      color: #ffd9ec;
     }
 
     .controls {
+      margin-top: 10px;
       display: flex;
       gap: 20px;
     }
 
     .controls button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #1db954;
+      background-color: #ff4da6;
       border: none;
-      border-radius: 4px;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
       cursor: pointer;
-      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, box-shadow 0.3s;
     }
 
-    iframe {
-      width: 0;
-      height: 0;
-      border: none;
-      visibility: hidden;
-      position: absolute;
+    .controls button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px #ff99cc;
+    }
+
+    .controls button img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .quote {
+      font-style: italic;
+      color: #ffd9ec;
+      margin-top: 20px;
+      font-size: 1em;
+      max-width: 90%;
+    }
+
+    @media (max-width: 600px) {
+      .controls button {
+        width: 40px;
+        height: 40px;
+      }
+
+      .controls button img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .quote {
+        font-size: 0.9em;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h1>Nossa Playlist</h1>
-    <ul class="music-list" id="musicList">
-      <li onclick="playSong(0)">Tennesse Whiskey</li>
+  <h1>Nossa Playlist ✨💖</h1>
+
+  <div class="music-container">
+    <ul id="musicList">
+      <li onclick="playSong(0)">Tennessee Whiskey</li>
       <li onclick="playSong(1)">The Night We Met</li>
       <li onclick="playSong(2)">Here With Me</li>
       <li onclick="playSong(3)">Sozinho</li>
@@ -94,7 +144,7 @@
       <li onclick="playSong(5)">Until I Found You</li>
       <li onclick="playSong(6)">João e Maria</li>
       <li onclick="playSong(7)">O Que Não Se Pode Explicar Aos Normais</li>
-      <li onclick="playSong(8)">I Belive To Me Soul</li>
+      <li onclick="playSong(8)">I Believe to My Soul</li>
       <li onclick="playSong(9)">O Nosso Amor</li>
       <li onclick="playSong(10)">Never Be Alone</li>
       <li onclick="playSong(11)">Lisboa</li>
@@ -105,28 +155,29 @@
       <li onclick="playSong(16)">Vienna</li>
       <li onclick="playSong(17)">Quem Disse Que o Amor Pode Acabar</li>
       <li onclick="playSong(18)">Aliança</li>
-      <li onclick="playSong(19)"></li>
-      <li onclick="playSong(20)"></li>
-      <li onclick="playSong(21)"></li>
     </ul>
   </div>
 
   <div class="player">
     <div id="musicTitle">Selecione uma música</div>
     <div class="controls">
-      <button onclick="prevSong()">⏮ Voltar</button>
-      <button onclick="togglePlay()">⏯ Play/Pause</button>
-      <button onclick="nextSong()">⏭ Avançar</button>
+      <button onclick="prevSong()" aria-label="Voltar">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/rewind.png" alt="Voltar" />
+      </button>
+      <button onclick="togglePlay()" aria-label="Play/Pause">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/play.png" alt="Play/Pause" />
+      </button>
+      <button onclick="nextSong()" aria-label="Avançar">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/fast-forward.png" alt="Avançar" />
+      </button>
     </div>
-    <p>
-    <p>“Nem todas as músicas dizem seu nome,
-    <div>mas todas falam de você".
-    <div id="player"></div>
+    <div class="quote">“Nem todas as músicas dizem seu nome,<br>mas todas falam de você.”</div>
+    <div id="player" style="width: 0; height: 0; visibility: hidden;"></div>
   </div>
 
-  <!-- API do YouTube -->
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f631c683c7.mp3?filename=click-124467.mp3"></audio>
 
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     const musicList = [
       { title: "Tennessee Whiskey", id: "4zAThXFOy2c" },
@@ -137,7 +188,7 @@
       { title: "Until I Found You", id: "GxldQ9eX2wo" },
       { title: "João e Maria", id: "Fxu-pE74m5A" },
       { title: "O Que Não Se Pode Explicar Aos Normais", id: "oZhi2S8a-Qo" },
-      { title: "I Belive To Me Soul", id: "3617vhFr_lY" },
+      { title: "I Believe to My Soul", id: "3617vhFr_lY" },
       { title: "O Nosso Amor", id: "hn06yJtt0ys" },
       { title: "Never Be Alone", id: "N7VCLNBNJQs" },
       { title: "Lisboa", id: "o3-lzz60iTQ" },
@@ -147,10 +198,7 @@
       { title: "Exagerado", id: "KmVmoHg9zuU" },
       { title: "Vienna", id: "3jL4S4X97sQ" },
       { title: "Quem Disse Que o Amor Pode Acabar", id: "jozWkGkl2vQ" },
-      { title: "Aliança", id: "3JiMr-HgHJ8" },
-      { title: " ", id: " " },
-      { title: " ", id: " " },
-      { title: " ", id: " " },
+      { title: "Aliança", id: "3JiMr-HgHJ8" }
     ];
 
     let player;
@@ -168,16 +216,18 @@
           rel: 0,
         },
         events: {
-  'onReady': function () {
-    playerReady = true;
-  },
-  'onStateChange': function (event) {
-    if (event.data === YT.PlayerState.ENDED) {
-      nextSong(); // Toca a próxima automaticamente
-    }
-  }
-}
+          onReady: () => playerReady = true,
+          onStateChange: (event) => {
+            if (event.data === YT.PlayerState.ENDED) nextSong();
+          }
+        }
       });
+    }
+
+    function playSound() {
+      const sound = document.getElementById("clickSound");
+      sound.currentTime = 0;
+      sound.play();
     }
 
     function playSong(index) {
@@ -186,16 +236,13 @@
       const music = musicList[currentIndex];
       document.getElementById("musicTitle").textContent = music.title;
       player.loadVideoById(music.id);
+      playSound();
     }
 
     function togglePlay() {
       if (!playerReady) return;
       const state = player.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-      } else {
-        player.playVideo();
-      }
+      state === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
     }
 
     function nextSong() {
